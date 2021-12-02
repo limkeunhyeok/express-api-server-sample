@@ -49,7 +49,7 @@ class UserService {
       throw new BadRequestException("Email does not exist.");
     }
     
-    const updated = this.userRepository.updateByEmail(email, ncik);
+    const updated = this.userRepository.updateByEmail(email, nick);
     return updated;
   }
 

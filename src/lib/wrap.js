@@ -10,4 +10,4 @@ const wrap = (handler) => {
   }
 }
 
-module.exports = wrap;
+exports.wrap = wrap
