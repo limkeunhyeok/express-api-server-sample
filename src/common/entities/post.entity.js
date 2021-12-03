@@ -1,6 +1,6 @@
 class PostEntity {
   constructor(id, userId, title, content) {
-    this.id = id,
+    this.id = id;
     this.userId = userId;
     this.title = title;
     this.content = content;
@@ -8,7 +8,7 @@ class PostEntity {
 
   static fromJson(json) {
     if (!json) return null;
-    return new UserEntity(
+    return new PostEntity(
       json._id,
       json.userId,
       json.title,

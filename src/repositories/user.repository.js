@@ -5,13 +5,13 @@ class UserRepository {
     this.User = UserModel;
   }
 
-  create(userInfo) {
+  async create(userInfo) {
     const user = new this.User(userInfo);
-    return user.save();
+    return await user.save();
   }
 
-  findByEmail(email) {
-    return this.User.findOne({ email });
+  async findByEmail(email) {
+    return await this.User.findOne({ email });
   }
 
   findAll() {

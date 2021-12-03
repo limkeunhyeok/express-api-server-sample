@@ -8,7 +8,7 @@ class UserService {
   }
 
   async signUp({ email, password, nick }) {
-    const hasEmail = this.userRepository.findByEmail(email);
+    const hasEmail = await this.userRepository.findByEmail(email);
 
     if (hasEmail) {
       throw new BadRequestException("Email is already registered.");
@@ -16,16 +16,16 @@ class UserService {
 
     const encryptedPassword = await bcrypt.hash(password, 10);
 
-    const user = this.userRepository.create({
+    const user = await this.userRepository.create({
       email,
-      encryptedPassword,
+      password: encryptedPassword,
       nick
     });
     return user;
   }
 
   async login({ email, password }) {
-    const user = this.userRepository.findByEmail(email);
+    const user = await this.userRepository.findByEmail(email);
     if (!user) {
       throw new BadRequestException("Email or password is incorrect.");
     }
@@ -43,23 +43,23 @@ class UserService {
     return token;
   }
 
-  updated({ email, nick }) {
-    const user = this.userRepository.findByEmail(email);
+  async updated({ email, nick }) {
+    const user = await this.userRepository.findByEmail(email);
     if (!user) {
       throw new BadRequestException("Email does not exist.");
     }
     
-    const updated = this.userRepository.updateByEmail(email, nick);
+    const updated = await this.userRepository.updateByEmail(email, nick);
     return updated;
   }
 
-  deleted({ email }) {
-    const user = this.userRepository.findByEmail(email);
+  async deleted({ email }) {
+    const user = await this.userRepository.findByEmail(email);
     if (!user) {
       throw new BadRequestException("Email does not exist.");
     }
     
-    const deleted = this.userRepository.deleteByEmail(email);
+    const deleted = await this.userRepository.deleteByEmail(email);
     return deleted;
   }
 }

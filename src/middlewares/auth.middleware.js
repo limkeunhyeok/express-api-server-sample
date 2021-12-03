@@ -2,7 +2,7 @@ const UnauthorizedException = require("../common/exceptions/unauthorized.excepti
 const { verify } = require("../lib/jwt");
 
 function verifyJWT(req, res, next) {
-  const bearerToken = req.headers["authorization"];
+  const bearerToken = req.headers.authorization;
   if (bearerToken) {
     try {
       const token = bearerToken.replace(/^Bearer /, '');
