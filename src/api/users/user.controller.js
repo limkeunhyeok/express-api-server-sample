@@ -1,10 +1,11 @@
 const express = require("express");
-// const { wrap } = require("../../lib/wrap");
+
 const UserRepository = require("../../repositories/user.repository");
 const UserService = require("../../services/user.service");
-const { BadRequestException } = require("../../common/exceptions");
+const UserValidation = require("./user.validation");
 
 const userService = new UserService(new UserRepository());
+const userValidation = new UserValidation();
 
 class UserController {
   constructor() {
@@ -28,19 +29,11 @@ class UserController {
   async signUp(req, res, next) {
     try {
       const { email, password, nick } = req.body;
-      if (!email) {
-        throw new BadRequestException("Email is required.");
-      }
-  
-      if (!password) {
-        throw new BadRequestException("Password is required.");
-      } else if (password.length < 8 || password.length > 16) {
-        throw new BadRequestException("Password must be 8-16 characters long.");
-      }
-  
-      if (!nick) {
-        throw new BadRequestException("Nick is required.");
-      }
+      
+      userValidation.email(email);
+      userValidation.password(password);
+      userValidation.nick(nick);
+
       const user = await userService.signUp({email, password, nick});
       return res.json(user);
     } catch (error) {
@@ -52,15 +45,8 @@ class UserController {
     try {
       const { email, password } = req.body;
 
-      if (!email) {
-        throw new BadRequestException("Email is required.");
-      }
-  
-      if (!password) {
-        throw new BadRequestException("Password is required.");
-      } else if (password.length < 8 || password.length > 16) {
-        throw new BadRequestException("Password must be 8-16 characters long.");
-      }
+      userValidation.email(email);
+      userValidation.password(password);
   
       const token = await userService.login({ email, password });
       return res.json(token);
@@ -73,10 +59,8 @@ class UserController {
     try {
       const { email } = req.body;
     
-      if (!email) {
-        throw new BadRequestException("Email is required.");
-      }
-  
+      userValidation.email(email);
+
       const deleted = await userService.deleted({ email });
       return res.json(deleted);
     } catch (error) {
@@ -88,13 +72,8 @@ class UserController {
     try {
       const { email, nick } = req.body;
 
-      if (!email) {
-        throw new BadRequestException("Email is required.");
-      }
-  
-      if (!nick) {
-        throw new BadRequestException("Nick is required.");
-      }
+      userValidation.email(email);
+      userValidation.nick(nick);
   
       const updated = await userService.updated({ email, nick });
       return res.json(updated)

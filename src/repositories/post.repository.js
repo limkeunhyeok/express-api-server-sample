@@ -5,29 +5,29 @@ class PostRepository {
     this.Post = PostModel;
   }
 
-  create(postInfo) {
+  async create(postInfo) {
     const post = new this.Post(postInfo);
-    return post.save();
+    return await post.save();
   }
 
-  findByUserId(userId) {
-    return this.Post.find({ user_id: userId })
+  async findByUserId(userId) {
+    return await this.Post.find({ user_id: userId })
   }
 
-  findByPostId(postId) {
-    return this.Post.findOne({ _id: postId });
+  async findByPostId(postId) {
+    return await this.Post.findOne({ _id: postId });
   }
 
-  findAll() {
-    return this.Post.find({});
+  async findAll() {
+    return await this.Post.find({});
   }
 
-  updateByPostId(postId, data) {
-    return this.Post.findOneAndUpdate({ _id: postId }, data);
+  async updateByPostId(postId, data) {
+    return await this.Post.findOneAndUpdate({ _id: postId }, data);
   }
 
-  deleteByPostId(postId) {
-    return this.Post.deleteOne({ _id: postId });
+  async deleteByPostId(postId) {
+    return await this.Post.deleteOne({ _id: postId });
   }
 }
 

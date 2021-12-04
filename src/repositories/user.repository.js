@@ -14,16 +14,16 @@ class UserRepository {
     return await this.User.findOne({ email });
   }
 
-  findAll() {
-    return this.User.find({});
+  async findAll() {
+    return await this.User.find({});
   }
 
-  updateByEmail(email, nick) {
-    return this.User.findOneAndUpdate({ email }, { nick });
+  async updateByEmail(email, nick) {
+    return await this.User.findOneAndUpdate({ email }, { nick });
   }
 
-  deleteByEmail(email) {
-    return this.User.deleteOne({ email });
+  async deleteByEmail(email) {
+    return await this.User.deleteOne({ email });
   }
 }
 
