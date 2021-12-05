@@ -1,7 +1,9 @@
 const express = require("express");
 const session = require("express-session");
+const accessMiddleware = require("./middlewares/access.middleware");
 const authMiddleware = require("./middlewares/auth.middleware");
 const errorMiddleware = require("./middlewares/error.middleware");
+const logger = require("./lib/winston");
 
 class App {
   constructor(controllers) {
@@ -15,7 +17,8 @@ class App {
   listen() {
     const port = process.env.PORT || 4000;
     this.app.listen(port, () => {
-      console.log(`Example app listening on port ${port}!`);
+      logger.info(`Example app listening on port ${port}!`);
+      // console.log(`Example app listening on port ${port}!`);
     })
   }
 
@@ -29,7 +32,8 @@ class App {
         saveUninitialized: true,
       })
     );
-    this.app.use(authMiddleware)
+    this.app.use(accessMiddleware);
+    this.app.use(authMiddleware);
   }
 
   initializeErrorHandling() {
