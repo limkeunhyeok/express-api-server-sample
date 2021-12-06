@@ -1,9 +1,11 @@
 const express = require("express");
 const session = require("express-session");
-const accessMiddleware = require("./middlewares/access.middleware");
 const authMiddleware = require("./middlewares/auth.middleware");
 const errorMiddleware = require("./middlewares/error.middleware");
 const logger = require("./lib/winston");
+const morgan = require("morgan");
+const morganFormat = process.env.NODE_ENV !== "production" ? "dev" : "combined";
+
 
 class App {
   constructor(controllers) {
@@ -18,7 +20,6 @@ class App {
     const port = process.env.PORT || 4000;
     this.app.listen(port, () => {
       logger.info(`Example app listening on port ${port}!`);
-      // console.log(`Example app listening on port ${port}!`);
     })
   }
 
@@ -32,7 +33,7 @@ class App {
         saveUninitialized: true,
       })
     );
-    this.app.use(accessMiddleware);
+    this.app.use(morgan(morganFormat, {stream: logger.stream}));
     this.app.use(authMiddleware);
   }
 

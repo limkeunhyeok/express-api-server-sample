@@ -1,13 +1,12 @@
-const wrap = (handler) => {
-  async (req, res, next) => {
-    try {
-      const response = await handler(req, res, next);
-      res.json(response);
-      next();
-    } catch (err) {
-      next(err);
-    }
+const Response = require("./response");
+
+exports.wrap = (handler) => async (req, res, next) => {
+  try {
+    const result = await handler(req, res, next);
+    const response = new Response(true).data(result).toJson();
+    res.json(response);
+    next();
+  } catch (error) {
+    next(error)
   }
 }
-
-exports.wrap = wrap

@@ -1,4 +1,5 @@
 const UserModel = require("../models/user.model");
+const UserEntity = require("../common/entities/user.entity");
 
 class UserRepository {
   constructor() {
@@ -11,15 +12,18 @@ class UserRepository {
   }
 
   async findByEmail(email) {
-    return await this.User.findOne({ email });
+    const user = await this.User.findOne({ email });
+    return UserEntity.fromJson(user);
   }
 
   async findAll() {
-    return await this.User.find({});
+    const user = await this.User.find({});
+    return UserEntity.fromJson(user);
   }
 
   async updateByEmail(email, nick) {
-    return await this.User.findOneAndUpdate({ email }, { nick });
+    const user = await this.User.findOneAndUpdate({ email }, { nick });
+    return UserEntity.fromJson(user);
   }
 
   async deleteByEmail(email) {
