@@ -5,14 +5,11 @@ const jwt = require("../lib/jwt");
 class PostService {
   constructor(postRepository, userRepository) {
     this.postRepository = postRepository;
-    this.userRepository = userRepository;
   }
 
-  async create({ email, title, content }) {
-    const user = await this.userRepository.findByEmail(email);
-
+  async create({ user_id, title, content }) {
     const post = await this.postRepository.create({
-      user_id: user._id,
+      user_id,
       title,
       content
     });

@@ -10,7 +10,7 @@ class PostEntity {
     if (!json) return null;
     return new PostEntity(
       json._id,
-      json.userId,
+      json.user_id,
       json.title,
       json.content
     );

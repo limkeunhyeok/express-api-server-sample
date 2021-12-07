@@ -1,4 +1,5 @@
 const PostModel = require("../models/post.model");
+const PostEntity = require("../common/entities/post.entity");
 
 class PostRepository {
   constructor() {
@@ -7,27 +8,34 @@ class PostRepository {
 
   async create(postInfo) {
     const post = new this.Post(postInfo);
-    return await post.save();
+    await post.save();
+    return post;
   }
 
   async findByUserId(userId) {
-    return await this.Post.find({ user_id: userId })
+    const post = await this.Post.find({ user_id: userId })
+    return PostEntity.fromJson(post);
   }
 
   async findByPostId(postId) {
-    return await this.Post.findOne({ _id: postId });
+    const post = await this.Post.findOne({ _id: postId });
+    return PostEntity.fromJson(post);
   }
 
   async findAll() {
-    return await this.Post.find({});
+    const posts = await this.Post.find({});
+    const result = posts.map(post => PostEntity.fromJson(post))
+    return result;
   }
 
   async updateByPostId(postId, data) {
-    return await this.Post.findOneAndUpdate({ _id: postId }, data);
+    const post = await this.Post.findOneAndUpdate({ _id: postId }, data);
+    return PostEntity.fromJson(post);
   }
 
   async deleteByPostId(postId) {
-    return await this.Post.deleteOne({ _id: postId });
+    const result = await this.Post.deleteOne({ _id: postId });
+    return result;
   }
 }
 

@@ -3,9 +3,11 @@ const path = require("path");
 
 const PostRepository = require("../../repositories/post.repository");
 const PostService = require("../../services/post.service");
+const UserRepository = require("../../repositories/user.repository");
 const PostValidation = require("./post.validation");
+const { wrap } = require("../../lib/wrap");
 
-const postService = new PostService(new PostRepository());
+const postService = new PostService(new PostRepository(), new UserRepository());
 const postValidation = new PostValidation();
 
 class PostController {
@@ -19,63 +21,49 @@ class PostController {
     const router = express.Router();
     
     router
-      .post("/", this.create)
-      .get("/", this.read)
-      // .get("/:postId", this.readOne)
-      .put("/:postId", this.updated)
-      .delete("/:postId", this.deleted)
+      .post("/", wrap(this.create))
+      .get("/", wrap(this.read))
+      .put("/", wrap(this.updated))
+      .delete("/", wrap(this.deleted))
     
     this.router.use(this.path, router);
   }
 
   async create(req, res, next) {
-    try {
-      const { email, title, content } = req.body;
+    const { title, content } = req.body;
+    const { user } = res.locals;
+    
+    postValidation.user(user);
+    postValidation.title(title);
+    postValidation.content(content);
 
-      postValidation.title(title);
-      postValidation.content(content);
-
-      const post = await postService.create({ email, title, content });
-      return res.json(post);
-    } catch (error) {
-      next(error)
-    } 
+    const { userId } = user;
+    const post = await postService.create({ user_id: userId, title, content });
+    return post;
   }
 
   async read(req, res, next) {
-    try {
-      let posts;
-      const { postId } = req.query;
-      if (postId) {
-        posts = await postService.findByPostId(postId);
-      } else {
-        posts = await postService.findAll();
-      }
-      return res.json(posts);
-    } catch (error) {
-      next(error)
+    let posts;
+    const { postId } = req.query;
+    if (postId) {
+      posts = await postService.findByPostId({ postId });
+    } else {
+      posts = await postService.findAll();
     }
+    return posts;
   }
 
   async updated(req, res, next) {
-    try {
-      const postId = path.parse(req.params.postId).base;
-      const { title, content } = req.body;
-      const updated = await postService.updated({ postId, title, content });
-      return res.json(updated); 
-    } catch (error) {
-      next(error)
-    }
+    const { postId } = req.query;
+    const { title, content } = req.body;
+    const updated = await postService.updated({ postId, title, content });
+    return updated;
   }
 
   async deleted(req, res, next) {
-    try {
-      const postId = path.parse(req.params.postId).base;
-      const deleted = await postService.deleted({ postId });
-      return res.json(deleted);
-    } catch (error) {
-      next(error)
-    }
+    const { postId } = req.query;
+    const deleted = await postService.deleted({ postId });
+    return deleted
   }
 }
 

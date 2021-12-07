@@ -1,6 +1,12 @@
-const { BadRequestException } = require("../../common/exceptions");
+const { BadRequestException, UnauthorizedException } = require("../../common/exceptions");
 
 class PostValidation {
+  user(user) {
+    if (!user) {
+      throw new UnauthorizedException("Access is denied.");
+    }
+  }
+
   title(title) {
     if (!title) {
       throw new BadRequestException("Title is required.")

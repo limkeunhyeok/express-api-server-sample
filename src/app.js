@@ -1,9 +1,11 @@
 const express = require("express");
 const session = require("express-session");
+const morgan = require("morgan");
+
 const authMiddleware = require("./middlewares/auth.middleware");
 const errorMiddleware = require("./middlewares/error.middleware");
 const logger = require("./lib/winston");
-const morgan = require("morgan");
+
 const morganFormat = process.env.NODE_ENV !== "production" ? "dev" : "combined";
 
 
@@ -14,6 +16,10 @@ class App {
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
     this.initializeErrorHandling();
+  }
+
+  getServer() {
+    return this.app;
   }
 
   listen() {

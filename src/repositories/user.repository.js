@@ -8,7 +8,8 @@ class UserRepository {
 
   async create(userInfo) {
     const user = new this.User(userInfo);
-    return await user.save();
+    await user.save();
+    return user;
   }
 
   async findByEmail(email) {
@@ -27,7 +28,8 @@ class UserRepository {
   }
 
   async deleteByEmail(email) {
-    return await this.User.deleteOne({ email });
+    const result = await this.User.deleteOne({ email });
+    return result;
   }
 }
 
