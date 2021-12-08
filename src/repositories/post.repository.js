@@ -13,8 +13,9 @@ class PostRepository {
   }
 
   async findByUserId(userId) {
-    const post = await this.Post.find({ user_id: userId })
-    return PostEntity.fromJson(post);
+    const posts = await this.Post.find({ user_id: userId });
+    const result = posts.map(post => PostEntity.fromJson(post));
+    return result;
   }
 
   async findByPostId(postId) {
