@@ -3,6 +3,9 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const mocha = require("mocha");
 
+const UserModel = require("../src/models/user.model");
+const PostModel = require("../src/models/post.model");
+
 const { before, after } = mocha;
 
 before(async () => {
@@ -17,5 +20,7 @@ before(async () => {
 });
 
 after(async () => {
+  await UserModel.deleteMany({});
+  await PostModel.deleteMany({});
   await mongoose.disconnect();
 });

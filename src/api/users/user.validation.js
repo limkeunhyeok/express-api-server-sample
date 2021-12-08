@@ -1,4 +1,4 @@
-const { BadRequestException } = require("../../common/exceptions");
+const { BadRequestException, UnauthorizedException } = require("../../common/exceptions");
 
 class UserValidation {
   email(email) {
@@ -23,6 +23,12 @@ class UserValidation {
   nick(nick) {
     if (!nick) {
       throw new BadRequestException("Nick is required.");
+    }
+  }
+
+  user(user) {
+    if (!user) {
+      throw new UnauthorizedException("Access is denied.");
     }
   }
 }

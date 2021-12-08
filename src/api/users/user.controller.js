@@ -48,20 +48,22 @@ class UserController {
   }
 
   async deleted(req, res, next) {
-    const { email } = req.body;
+    const { user } = res.locals;
+    userValidation.user(user);
   
-    userValidation.email(email);
-
+    const { email } = user;
     const deleted = await userService.deleted({ email });
     return { deleted };
   }
 
   async updated(req, res, next) {
-    const { email, nick } = req.body;
-
-    userValidation.email(email);
+    const { user } = res.locals;
+    userValidation.user(user);
+    
+    const { nick } = req.body;
     userValidation.nick(nick);
-
+    
+    const { email } = user;
     const updated = await userService.updated({ email, nick });
     return { updated };
   }

@@ -3,11 +3,10 @@ const path = require("path");
 
 const PostRepository = require("../../repositories/post.repository");
 const PostService = require("../../services/post.service");
-const UserRepository = require("../../repositories/user.repository");
 const PostValidation = require("./post.validation");
 const { wrap } = require("../../lib/wrap");
 
-const postService = new PostService(new PostRepository(), new UserRepository());
+const postService = new PostService(new PostRepository());
 const postValidation = new PostValidation();
 
 class PostController {
@@ -43,6 +42,10 @@ class PostController {
   }
 
   async read(req, res, next) {
+    const { user } = res.locals;
+  
+    postValidation.user(user);
+    
     let posts;
     const { postId } = req.query;
     if (postId) {
@@ -55,15 +58,22 @@ class PostController {
 
   async updated(req, res, next) {
     const { postId } = req.query;
+    postValidation.postId(postId);
+
     const { title, content } = req.body;
+    postValidation.title(title);
+    postValidation.content(content);
+
     const updated = await postService.updated({ postId, title, content });
-    return updated;
+    return { updated };
   }
 
   async deleted(req, res, next) {
     const { postId } = req.query;
+    postValidation.postId(postId);
+
     const deleted = await postService.deleted({ postId });
-    return deleted
+    return { deleted }
   }
 }
 

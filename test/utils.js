@@ -21,3 +21,11 @@ exports.getUserData = () => {
   }
   return userData;
 }
+
+exports.getPostData = () => {
+  const postData = {
+    title: faker.lorem.sentence(),
+    content: faker.lorem.paragraphs(3),
+  }
+  return postData;
+}

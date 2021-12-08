@@ -18,6 +18,12 @@ class PostValidation {
       throw new BadRequestException("Content is required.");
     }
   }
+
+  postId(postId) {
+    if (!postId) {
+      throw new BadRequestException("Post id is required.");
+    }
+  }
 }
 
 module.exports = PostValidation;

@@ -9,7 +9,7 @@ class PostRepository {
   async create(postInfo) {
     const post = new this.Post(postInfo);
     await post.save();
-    return post;
+    return PostEntity.fromJson(post);
   }
 
   async findByUserId(userId) {
@@ -28,8 +28,8 @@ class PostRepository {
     return result;
   }
 
-  async updateByPostId(postId, data) {
-    const post = await this.Post.findOneAndUpdate({ _id: postId }, data);
+  async updateByPostId(postId, title, content) {
+    const post = await this.Post.findOneAndUpdate({ _id: postId }, { title, content }, { new: true });
     return PostEntity.fromJson(post);
   }
 

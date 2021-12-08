@@ -250,10 +250,120 @@ describe("user api test", () => {
   });
 
   describe("nick update PUT /api/users/nick", () => {
-    
+    const apiPath = `${root}/nick`;
+    const userData = getUserData();
+    let token;
+
+    beforeEach("set user signup and login", async () => {
+      const params = {
+        email: userData.email,
+        password: userData.password,
+        nick: userData.nick,
+      };
+
+      await req
+        .post(`${root}/signup`)
+        .send(params);
+
+      const res = await req
+        .post(`${root}/login`)
+        .send(params);
+      
+      const { response } = res.body;
+      token = response.token;
+    });
+
+    it("success: nick update - 200", async () => {
+      const params = {
+        nick: userData.nick,
+      };
+
+      const res = await req
+        .put(apiPath)
+        .auth(token, { type: "bearer" })
+        .send(params)
+        .expect(200);
+      
+      const { success, response } = res.body;
+      const { updated } = response;
+      assert.deepEqual(success, true);
+      assert.deepEqual(updated.nick, params.nick);
+    });
+
+    it("fail: unauthorized - 401", async () => {
+      const params = {
+        nick: userData.nick,
+      };
+
+      const res = await req
+        .put(apiPath)
+        .send(params)
+        .expect(401);
+      
+      const { success, error } = res.body;
+      assert.deepEqual(success, false);
+      assert.deepEqual(error.message, "Access is denied.");
+    });
+
+    it("fail: nick is required - 400", async () => {
+      const params = {};
+
+      const res = await req
+        .put(apiPath)
+        .auth(token, { type: "bearer" })
+        .send(params)
+        .expect(400);
+      
+      const { success, error } = res.body;
+      assert.deepEqual(success, false);
+      assert.deepEqual(error.message, "Nick is required.");
+    });
   });
 
   describe("user delete DELETE /api/users", () => {
-    
+    const apiPath = `${root}`;
+    const userData = getUserData();
+    let token;
+
+    beforeEach("set user signup and login", async () => {
+      const params = {
+        email: userData.email,
+        password: userData.password,
+        nick: userData.nick,
+      };
+
+      await req
+        .post(`${root}/signup`)
+        .send(params);
+
+      const res = await req
+        .post(`${root}/login`)
+        .send(params);
+      
+      const { response } = res.body;
+      token = response.token;
+    });
+
+    it("success: delete user - 200", async () => {
+      const res = await req
+        .delete(apiPath)
+        .auth(token, { type: "bearer" })
+        .expect(200);
+      
+      const { success, response } = res.body;
+      const { deleted } = response;
+      assert.deepEqual(success, true);
+      assert.deepEqual(deleted.deletedCount, 1);
+    });
+
+    it("fail: unauthorized - 401", async () => {
+      const res = await req
+        .delete(apiPath)
+        .expect(401);
+      
+        const { success, error } = res.body;
+        assert.deepEqual(success, false);
+        assert.deepEqual(error.message, "Access is denied.");
+    });
   });
 })

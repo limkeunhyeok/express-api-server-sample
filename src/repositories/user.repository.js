@@ -9,7 +9,7 @@ class UserRepository {
   async create(userInfo) {
     const user = new this.User(userInfo);
     await user.save();
-    return user;
+    return UserEntity.fromJson(user);
   }
 
   async findByEmail(email) {
@@ -23,7 +23,7 @@ class UserRepository {
   }
 
   async updateByEmail(email, nick) {
-    const user = await this.User.findOneAndUpdate({ email }, { nick });
+    const user = await this.User.findOneAndUpdate({ email }, { nick }, { new: true });
     return UserEntity.fromJson(user);
   }
 

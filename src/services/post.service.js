@@ -3,7 +3,7 @@ const { BadRequestException } = require("../common/exceptions");
 const jwt = require("../lib/jwt");
 
 class PostService {
-  constructor(postRepository, userRepository) {
+  constructor(postRepository) {
     this.postRepository = postRepository;
   }
 
@@ -37,10 +37,7 @@ class PostService {
       throw new BadRequestException("Post does not exist.");
     }
 
-    const updated = await this.postRepository.updateByPostId(postId, {
-      title,
-      content
-    });
+    const updated = await this.postRepository.updateByPostId(postId, title, content);
     return updated;
   }
 
