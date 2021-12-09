@@ -23,7 +23,7 @@ describe("user service test", () => {
     it("success: create user and encrypted password", async () => {
       const userData = getUserData();
       const result = await userService.signUp(userData);
-      
+
       assert.deepEqual(userData.email, result.email);
       assert.deepEqual(userData.nick, result.nick);
       
