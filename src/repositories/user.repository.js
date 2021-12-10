@@ -1,5 +1,5 @@
-const UserModel = require("../models/user.model");
-const UserEntity = require("../common/entities/user.entity");
+const { UserModel } = require("../models");
+const { UserEntity } = require("../common/entities");
 
 class UserRepository {
   constructor() {

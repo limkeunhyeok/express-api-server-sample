@@ -2,8 +2,7 @@ const express = require("express");
 const session = require("express-session");
 const morgan = require("morgan");
 
-const authMiddleware = require("./middlewares/auth.middleware");
-const errorMiddleware = require("./middlewares/error.middleware");
+const { authMiddleware, errorMiddleware } = require("./middlewares")
 const logger = require("./lib/winston");
 
 const morganFormat = process.env.NODE_ENV !== "production" ? "dev" : "combined";

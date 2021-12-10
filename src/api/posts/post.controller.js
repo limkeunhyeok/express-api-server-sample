@@ -1,9 +1,8 @@
 const express = require("express");
-const path = require("path");
 
-const PostRepository = require("../../repositories/post.repository");
-const PostService = require("../../services/post.service");
 const PostValidation = require("./post.validation");
+const { PostRepository } = require("../../repositories");
+const { PostService } = require("../../services");
 const { wrap } = require("../../lib/wrap");
 
 const postService = new PostService(new PostRepository());

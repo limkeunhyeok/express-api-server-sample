@@ -1,7 +1,7 @@
 const UnauthorizedException = require("../common/exceptions/unauthorized.exception");
 const { verify } = require("../lib/jwt");
 
-function verifyJWT(req, res, next) {
+function authMiddleWare(req, res, next) {
   const bearerToken = req.headers.authorization;
   if (bearerToken) {
     try {
@@ -17,4 +17,4 @@ function verifyJWT(req, res, next) {
   }
 }
 
-module.exports = verifyJWT;
+module.exports = authMiddleWare;

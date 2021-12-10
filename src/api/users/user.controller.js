@@ -1,8 +1,8 @@
 const express = require("express");
 
-const UserRepository = require("../../repositories/user.repository");
-const UserService = require("../../services/user.service");
 const UserValidation = require("./user.validation");
+const { UserRepository } = require("../../repositories");
+const { UserService } = require("../../services");
 const { wrap } = require("../../lib/wrap");
 
 const userService = new UserService(new UserRepository());

@@ -1,5 +1,5 @@
-const PostModel = require("../models/post.model");
-const PostEntity = require("../common/entities/post.entity");
+const { PostModel } = require("../models");
+const { PostEntity } = require("../common/entities");
 
 class PostRepository {
   constructor() {

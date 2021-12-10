@@ -1,6 +1,4 @@
-const bcrypt = require("bcrypt");
 const { BadRequestException } = require("../common/exceptions");
-const jwt = require("../lib/jwt");
 
 class PostService {
   constructor(postRepository) {
