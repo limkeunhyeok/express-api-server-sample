@@ -9,7 +9,7 @@ class UserEntity {
   static fromJson(json) {
     if (!json) return null;
     return new UserEntity(
-      json._id,
+      json.id,
       json.email,
       json.nick
     );
@@ -24,4 +24,4 @@ class UserEntity {
   }
 }
 
-module.exports = UserEntity
+module.exports = UserEntity;

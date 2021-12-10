@@ -1,18 +1,22 @@
 class PostEntity {
-  constructor(id, userId, title, content) {
+  constructor(id, userId, categoryId, title, slug, content) {
     this.id = id;
     this.userId = userId;
+    this.categoryId = categoryId;
     this.title = title;
+    this.slug = slug;
     this.content = content;
   }
 
   static fromJson(json) {
     if (!json) return null;
     return new PostEntity(
-      json._id,
-      json.user_id,
+      json.id,
+      json.userId,
+      json.categoryId,
       json.title,
-      json.content
+      json.slug,
+      json.content,
     );
   }
 
@@ -20,10 +24,12 @@ class PostEntity {
     return {
       id: this.id,
       userId: this.userId,
+      categoryId: this.categoryId,
       title: this.title,
+      slug: this.slug,
       content: this.content,
     };
   }
 }
 
-module.exports = PostEntity
+module.exports = PostEntity;
