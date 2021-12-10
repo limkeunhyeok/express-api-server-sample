@@ -29,9 +29,10 @@ class UserController {
   async signUp(req, res, next) {
     const { email, password, nick } = req.body;
     
-    userValidation.email(email);
-    userValidation.password(password);
-    userValidation.nick(nick);
+    userValidation
+      .email(email)
+      .password(password)
+      .nick(nick);
 
     await userService.signUp({email, password, nick});
     return true;
@@ -40,8 +41,9 @@ class UserController {
   async login(req, res, next) {
     const { email, password } = req.body;
 
-    userValidation.email(email);
-    userValidation.password(password);
+    userValidation
+      .email(email)
+      .password(password);
 
     const token = await userService.login({ email, password });
     return { token }
@@ -49,7 +51,8 @@ class UserController {
 
   async deleted(req, res, next) {
     const { user } = res.locals;
-    userValidation.user(user);
+    userValidation
+      .user(user);
   
     const { email } = user;
     const deleted = await userService.deleted({ email });
@@ -58,10 +61,10 @@ class UserController {
 
   async updated(req, res, next) {
     const { user } = res.locals;
-    userValidation.user(user);
-    
     const { nick } = req.body;
-    userValidation.nick(nick);
+    userValidation
+      .user(user)
+      .nick(nick);
     
     const { email } = user;
     const updated = await userService.updated({ email, nick });

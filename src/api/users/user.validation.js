@@ -10,6 +10,7 @@ class UserValidation {
     if (!pattern.test(email)) {
       throw new BadRequestException("Email is invalid.");
     }
+    return this;
   }
 
   password(password) {
@@ -18,18 +19,21 @@ class UserValidation {
     } else if (password.length < 8 || password.length > 16) {
       throw new BadRequestException("Password must be 8-16 characters long.");
     }
+    return this;
   }
 
   nick(nick) {
     if (!nick) {
       throw new BadRequestException("Nick is required.");
     }
+    return this;
   }
 
   user(user) {
     if (!user) {
       throw new UnauthorizedException("Access is denied.");
     }
+    return this;
   }
 }
 

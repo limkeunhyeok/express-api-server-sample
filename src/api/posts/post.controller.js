@@ -31,9 +31,10 @@ class PostController {
     const { title, content } = req.body;
     const { user } = res.locals;
     
-    postValidation.user(user);
-    postValidation.title(title);
-    postValidation.content(content);
+    postValidation
+      .user(user)
+      .title(title)
+      .content(content);
 
     const { userId } = user;
     const post = await postService.create({ user_id: userId, title, content });
@@ -43,7 +44,8 @@ class PostController {
   async read(req, res, next) {
     const { user } = res.locals;
   
-    postValidation.user(user);
+    postValidation
+      .user(user);
     
     let posts;
     const { postId } = req.query;
@@ -57,11 +59,11 @@ class PostController {
 
   async updated(req, res, next) {
     const { postId } = req.query;
-    postValidation.postId(postId);
-
     const { title, content } = req.body;
-    postValidation.title(title);
-    postValidation.content(content);
+    postValidation
+      .postId(postId)
+      .title(title)
+      .content(content);
 
     const updated = await postService.updated({ postId, title, content });
     return { updated };
@@ -69,7 +71,8 @@ class PostController {
 
   async deleted(req, res, next) {
     const { postId } = req.query;
-    postValidation.postId(postId);
+    postValidation
+      .postId(postId);
 
     const deleted = await postService.deleted({ postId });
     return { deleted }
