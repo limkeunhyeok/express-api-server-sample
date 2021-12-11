@@ -12,6 +12,11 @@ class CommentRepository {
     return CommentEntity.fromJson(comment);
   }
 
+  async findByCommentId(commentId) {
+    const comment = await this.Comment.findOne({ id: commentId });
+    return CommentEntity.fromJson(comment);
+  }
+
   async findByUserId(userId) {
     const comments = await this.Comment.find({ userId });
     const result = comments.map(comment => CommentEntity.fromJson(comment));
@@ -19,8 +24,9 @@ class CommentRepository {
   }
 
   async findByPostId(postId) {
-    const comment = await this.Comment.findOne({ postId });
-    return CommentEntity.fromJson(comment);
+    const comments = await this.Comment.find({ postId });
+    const result = comments.map(comment => CommentEntity.fromJson(comment));
+    return result;
   }
 
   async findAll() {

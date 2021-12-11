@@ -5,9 +5,9 @@ class PostService {
     this.postRepository = postRepository;
   }
 
-  async create({ user_id, title, content }) {
+  async create({ userId, title, content }) {
     const post = await this.postRepository.create({
-      user_id,
+      userId,
       title,
       content
     });
