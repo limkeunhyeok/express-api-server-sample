@@ -37,7 +37,7 @@ class PostController {
       .content(content);
 
     const { userId } = user;
-    const post = await postService.create({ user_id: userId, title, content });
+    const post = await postService.create({ userId, title, content });
     return post;
   }
 
