@@ -13,13 +13,13 @@ class PostRepository {
   }
 
   async findByUserId(userId) {
-    const posts = await this.Post.find({ user_id: userId });
+    const posts = await this.Post.find({ userId });
     const result = posts.map(post => PostEntity.fromJson(post));
     return result;
   }
 
   async findByPostId(postId) {
-    const post = await this.Post.findOne({ _id: postId });
+    const post = await this.Post.findOne({ id: postId });
     return PostEntity.fromJson(post);
   }
 
@@ -30,12 +30,12 @@ class PostRepository {
   }
 
   async updateByPostId(postId, title, content) {
-    const post = await this.Post.findOneAndUpdate({ _id: postId }, { title, content }, { new: true });
+    const post = await this.Post.findOneAndUpdate({ id: postId }, { title, content }, { new: true });
     return PostEntity.fromJson(post);
   }
 
   async deleteByPostId(postId) {
-    const result = await this.Post.deleteOne({ _id: postId });
+    const result = await this.Post.deleteOne({ id: postId });
     return result;
   }
 }
