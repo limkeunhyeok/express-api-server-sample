@@ -20,8 +20,9 @@ class UserController {
     router
       .post("/signup", wrap(this.signUp))
       .post("/login", wrap(this.login))
-      .put("/nick", wrap(this.updated))
-      .delete("/", wrap(this.deleted))
+      .put("/nick", wrap(this.updateNick))
+      .put("/password", wrap(this.updatePassword))
+      .delete("/", wrap(this.deleteUser))
     
     this.router.use(this.path, router);
   }
@@ -34,7 +35,7 @@ class UserController {
       .password(password)
       .nick(nick);
 
-    await userService.signUp({email, password, nick});
+    await userService.signUp({ email, password, nick });
     return true;
   }
 
@@ -49,25 +50,37 @@ class UserController {
     return { token }
   }
 
-  async deleted(req, res, next) {
+  async deleteUser(req, res, next) {
     const { user } = res.locals;
     userValidation
       .user(user);
   
-    const { email } = user;
-    const deleted = await userService.deleted({ email });
+    const { id } = user;
+    const deleted = await userService.deleteUser({ id });
     return { deleted };
   }
 
-  async updated(req, res, next) {
+  async updateNick(req, res, next) {
     const { user } = res.locals;
     const { nick } = req.body;
     userValidation
       .user(user)
       .nick(nick);
     
-    const { email } = user;
-    const updated = await userService.updated({ email, nick });
+    const { id } = user;
+    const updated = await userService.updated({ id, nick });
+    return { updated };
+  }
+  
+  async updatePassword(req, res, next) {
+    const { user } = res.locals;
+    const { password } = req.body;
+    userValidation
+      .user(user)
+      .password(password);
+    
+    const { id } = user;
+    const updated = await userService.updated({ id, password });
     return { updated };
   }
 }

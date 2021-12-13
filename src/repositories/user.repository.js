@@ -17,18 +17,28 @@ class UserRepository {
     return UserEntity.fromJson(user);
   }
 
+  async findById(id) {
+    const user = await this.User.findOne({ id });
+    return UserEntity.fromJson(user);
+  }
+
   async findAll() {
     const user = await this.User.find({});
     return UserEntity.fromJson(user);
   }
 
-  async updateByEmail(email, nick) {
-    const user = await this.User.findOneAndUpdate({ email }, { nick }, { new: true });
+  async updateNickById(id, nick) {
+    const user = await this.User.findOneAndUpdate({ id }, { nick }, { new: true });
     return UserEntity.fromJson(user);
   }
 
-  async deleteByEmail(email) {
-    const result = await this.User.deleteOne({ email });
+  async updatePasswordById(id, password) {
+    const user = await this.User.findOneAndUpdate({ id }, { password }, { new: true });
+    return UserEntity.fromJson(user);
+  }
+
+  async deleteById(id) {
+    const result = await this.User.deleteOne({ id });
     return result;
   }
 }

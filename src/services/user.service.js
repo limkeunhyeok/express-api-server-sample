@@ -14,11 +14,9 @@ class UserService {
       throw new BadRequestException("Email is already registered.");
     }
 
-    const encryptedPassword = await bcrypt.hash(password, 10);
-
     const user = await this.userRepository.create({
       email,
-      password: encryptedPassword,
+      password,
       nick
     });
     return user;
@@ -37,29 +35,24 @@ class UserService {
 
     const token = jwt.create({
       userId: user.id,
-      email: user.email,
       nick: user.nick
     })
     return token;
   }
 
-  async updated({ email, nick }) {
-    const user = await this.userRepository.findByEmail(email);
-    if (!user) {
-      throw new BadRequestException("Email does not exist.");
-    }
-    
-    const updated = await this.userRepository.updateByEmail(email, nick);
+  async updateNick({ id, nick }) {
+    const updated = await this.userRepository.updateNickById(id, nick);
     return updated;
   }
 
-  async deleted({ email }) {
-    const user = await this.userRepository.findByEmail(email);
-    if (!user) {
-      throw new BadRequestException("Email does not exist.");
-    }
-    
-    const deleted = await this.userRepository.deleteByEmail(email);
+  async updatePassword({ id, password }) {
+    const encryptionPassword = await bcrypt.hash(password, 10);
+    const updated = await this.userRepository.updateNickById(id, encryptionPassword);
+    return updated;
+  }
+
+  async deleteUser({ id }) {
+    const deleted = await this.userRepository.deleteById(id);
     return deleted;
   }
 }
