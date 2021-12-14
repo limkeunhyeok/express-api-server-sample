@@ -23,6 +23,12 @@ class PostRepository {
     return PostEntity.fromJson(post);
   }
 
+  async findByCategoryId(categoryId) {
+    const posts = await this.Post.find({ categoryId });
+    const result = posts.map(post => PostEntity.fromJson(post));
+    return result;
+  }
+
   async findAll() {
     const posts = await this.Post.find({});
     const result = posts.map(post => PostEntity.fromJson(post))
@@ -36,6 +42,11 @@ class PostRepository {
 
   async deleteByPostId(postId) {
     const result = await this.Post.deleteOne({ id: postId });
+    return result;
+  }
+
+  async deleteByCategoryId(categoryId) {
+    const result = await this.Post.deleteMany({ categoryId });
     return result;
   }
 }

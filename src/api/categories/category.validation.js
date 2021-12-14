@@ -1,4 +1,5 @@
 const { BadRequestException, UnauthorizedException } = require("../../common/exceptions");
+const regexp = require("../../lib/regexp");
 
 class CategoryValidation {
   user(user) {
@@ -11,6 +12,15 @@ class CategoryValidation {
   title(title) {
     if (!title) {
       throw new BadRequestException("Title is required.")
+    }
+
+    if (title.length > 16) {
+      throw new BadRequestException("Title is invalid.");
+    }
+
+    const { checkEnglish } = regexp;
+    if (!checkEnglish.test(title)) {
+      throw new BadRequestException("Title is invalid.");
     }
     return this;
   }

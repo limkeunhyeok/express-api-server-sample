@@ -1,11 +1,12 @@
 const express = require("express");
+const path = require("path");
 
 const CategoryValidation = require("./category.validation");
-const { CategoryRepository } = require("../../repositories");
+const { CategoryRepository, PostRepository } = require("../../repositories");
 const { CategoryService } = require("../../services");
 const { wrap } = require("../../lib/wrap");
 
-const categoryService = new CategoryService(new CategoryRepository());
+const categoryService = new CategoryService(new CategoryRepository(), new PostRepository());
 const categoryValidation = new CategoryValidation();
 
 class CategoryController {
@@ -20,9 +21,10 @@ class CategoryController {
     
     router
       .post("/", wrap(this.create))
-      .get("/", wrap(this.read))
-      .put("/", wrap(this.updated))
-      .delete("/", wrap(this.deleted))
+      .get("/", wrap(this.readAll))
+      .get("/:categoryId", wrap(this.readOneAndGetAllPosts))
+      .put("/:categoryId", wrap(this.updated))
+      .delete("/:categoryId", wrap(this.deleted))
     
     this.router.use(this.path, router);
   }
@@ -39,26 +41,31 @@ class CategoryController {
     return category;
   }
 
-  async read(req, res, next) {
+  async readAll(req, res, next) {
     const { user } = res.locals;
-  
+
     categoryValidation
       .user(user);
-    
-    let categories;
-    const { categoryId } = req.query;
-    if (categoryId) {
-      categories = await categoryService.findByCategoryId({ categoryId });
-    } else {
-      categories = await categoryService.findAll();
-    }
+
+    const categories = await categoryService.findAll();
     return categories;
   }
 
-  async updated(req, res, next) {
-    const { categoryId } = req.query;
-    const { title } = req.body;
+  async readOneAndGetAllPosts(req, res, next) {
     const { user } = res.locals;
+    const categoryId = path.parse(req.params.categoryId).base;
+
+    categoryValidation
+      .user(user);
+    
+    const result = await categoryService.findAllPostsByCategoryID({ categoryId });
+    return result;
+  }
+
+  async updated(req, res, next) {
+    const { user } = res.locals;
+    const { title } = req.body;
+    const categoryId = path.parse(req.params.categoryId).base;
 
     categoryValidation
       .user(user)
@@ -69,8 +76,8 @@ class CategoryController {
   }
 
   async deleted(req, res, next) {
-    const { categoryId } = req.query;
     const { user } = res.locals;
+    const categoryId = path.parse(req.params.categoryId).base;
 
     categoryValidation
       .user(user)

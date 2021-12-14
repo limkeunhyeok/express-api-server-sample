@@ -31,8 +31,12 @@ class UserValidation {
       throw new BadRequestException("Nick is required.");
     }
 
-    const pattern = regexp.nick;
-    if (!pattern.test(nick)) {
+    if (nick.length > 16) {
+      throw new BadRequestException("Nick is invalid.");
+    }
+
+    const { checkEnglish } = regexp;
+    if (!checkEnglish.test(nick)) {
       throw new BadRequestException("Nick is invalid.");
     }
     return this;

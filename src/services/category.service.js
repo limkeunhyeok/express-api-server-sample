@@ -1,8 +1,9 @@
 const { BadRequestException } = require("../common/exceptions");
 
 class CategoryService {
-  constructor(categoryRepository) {
+  constructor(categoryRepository, postRepository) {
     this.categoryRepository = categoryRepository;
+    this.postRepository = postRepository;
   }
 
   async create({ title }) {
@@ -27,10 +28,20 @@ class CategoryService {
     return categories;
   }
 
+  async findAllPostsByCategoryID({ categoryId }) {
+    const category = await this.categoryRepository.findByCategoryId(categoryId);
+    if (!category) {
+      throw new BadRequestException("Category does not exist.");
+    }
+
+    const posts = await this.postRepository.findByCategoryId(categoryId);
+    return { category, posts }
+  }
+
   async updated({ categoryId, title }) {
     const category = await this.categoryRepository.findByCategoryId(categoryId);
     if (!category) {
-      throw new BadRequestException("Post does not exist.");
+      throw new BadRequestException("Category does not exist.");
     }
 
     const updated = await this.categoryRepository.updateByCategoryId(categoryId, title);
@@ -40,13 +51,13 @@ class CategoryService {
   async deleted({ categoryId }) {
     const category = await this.categoryRepository.findByCategoryId(categoryId);
     if (!category) {
-      throw new BadRequestException("Post does not exist.");
+      throw new BadRequestException("Category does not exist.");
     }
 
+    await this.postRepository.deleteByCategoryId(categoryId);
     const deleted = await this.categoryRepository.deleteByCategoryId(categoryId);
     return deleted;
   }
-
 }
 
 module.exports = CategoryService;
