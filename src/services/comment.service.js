@@ -1,8 +1,9 @@
-const { BadRequestException } = require("../common/exceptions");
+const { BadRequestException, UnauthorizedException } = require("../common/exceptions");
 
 class CommentService {
-  constructor(commentRepository) {
+  constructor(commentRepository, postRepository) {
     this.commentRepository = commentRepository;
+    this.postRepository = postRepository;
   }
 
   async create({ userId, postId, content }) {
@@ -14,9 +15,21 @@ class CommentService {
     return comment;
   }
 
-  async findByUserId({ userId }) {
+  async findByUserIdAndSortByPostId({ userId }) {
     const comments = await this.commentRepository.findByUserId(userId);
-    return comments
+    const postIdSet = new Set(comments.map(comment => comment.id))
+    
+    let result = [];
+    postIdSet.forEach(async (postId) => {
+      const post = await this.postRepository.findByPostId(postId);
+      const data = {
+        postId,
+        title: post.title,
+        comments: comments.filter((comment) => comment.postId === postId),
+      }
+      result = [...result, data];
+    })
+    return result;
   }
 
   async findByPostId({ postId }) {
@@ -24,16 +37,14 @@ class CommentService {
     return comments;
   }
 
-  async findAll() {
-    const comments = await this.commentRepository.findAll();
-    return comments;
-  }
-
-
-  async deleted({ commentId }) {
+  async deleted({ commentId, userId }) {
     const comment = await this.commentRepository.findByCommentId(commentId);
     if (!comment) {
-      throw new BadRequestException("Post does not exist.");
+      throw new BadRequestException("Comment does not exist.");
+    }
+
+    if (comment.userId !== userId) {
+      throw new UnauthorizedException("Access is denied.");
     }
 
     const deleted = await this.commentRepository.deleteByCommentId(commentId);

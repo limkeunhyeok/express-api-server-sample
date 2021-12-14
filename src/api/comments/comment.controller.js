@@ -1,11 +1,12 @@
 const express = require("express");
+const path = require("path");
 
 const CommentValidation = require("./comment.validation");
-const { CommentRepository } = require("../../repositories");
+const { CommentRepository, PostRepository } = require("../../repositories");
 const { CommentService } = require("../../services");
 const { wrap } = require("../../lib/wrap");
 
-const commentService = new CommentService(new CommentRepository());
+const commentService = new CommentService(new CommentRepository(), new PostRepository());
 const commentValidation = new CommentValidation();
 
 class CommentController {
@@ -19,17 +20,18 @@ class CommentController {
     const router = express.Router();
     
     router
-      .post("/", wrap(this.create))
-      .get("/", wrap(this.read))
-      .put("/", wrap(this.updated))
-      .delete("/", wrap(this.deleted))
+      .post("/:postId", wrap(this.create))
+      .get("/", wrap(this.readAllCommentsFromUsers))
+      .get("/:postId", wrap(this.readAllCommentsOnThePost))
+      .delete("/:commentId", wrap(this.deleted))
     
     this.router.use(this.path, router);
   }
 
   async create(req, res, next) {
-    const { postId, content } = req.body;
+    const { content } = req.body;
     const { user } = res.locals;
+    const postId = path.parse(req.params.postId).base;
     
     commentValidation
       .user(user)
@@ -40,9 +42,20 @@ class CommentController {
     return comment;
   }
 
-  async read(req, res, next) {
-    const { postId } = req.body;
+  async readAllCommentsFromUsers(req, res, next) {
     const { user } = res.locals;
+    
+    commentValidation
+      .user(user);
+    
+    const { userId } = user;
+    const comments = await commentService.findByUserIdAndSortByPostId({ userId });
+    return comments;
+  }
+
+  async readAllCommentsOnThePost(req, res, next) {
+    const { user } = res.locals;
+    const postId = path.parse(req.params.postId).base;
   
     commentValidation
       .user(user);
@@ -52,13 +65,14 @@ class CommentController {
   }
 
   async deleted(req, res, next) {
-    const { commentId } = req.body;
     const { user } = res.locals;
+    const commentId = path.parse(req.params.commentId).base;
 
     commentValidation
       .user(user);
 
-    const deleted = await commentService.deleted({ commentId });
+    const { userId } = user;
+    const deleted = await commentService.deleted({ commentId, userId });
     return { deleted }
   }
 }
