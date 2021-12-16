@@ -39,6 +39,11 @@ class CommentRepository {
     const result = await this.Comment.deleteOne({ id: commentId });
     return result;
   }
+
+  async deleteByPostId(postId) {
+    const result = await this.Comment.deleteMany({ postId });
+    return result;
+  }
 }
 
 module.exports = CommentRepository;

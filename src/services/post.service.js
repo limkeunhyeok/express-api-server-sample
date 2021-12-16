@@ -1,14 +1,20 @@
-const { BadRequestException } = require("../common/exceptions");
+const shortid = require("shortid");
+
+const { BadRequestException, UnauthorizedException } = require("../common/exceptions");
 
 class PostService {
-  constructor(postRepository) {
+  constructor(postRepository, commentRepository) {
     this.postRepository = postRepository;
+    this.commentRepository = commentRepository;
   }
 
-  async create({ userId, title, content }) {
+  async create({ userId, categoryId, title, content }) {
+    const slug = `${title.replace(/\s/gi, "-")}-${shortid.generate()}`;
     const post = await this.postRepository.create({
       userId,
+      categoryId,
       title,
+      slug,
       content
     });
     return post;
@@ -23,32 +29,50 @@ class PostService {
     const post = await this.postRepository.findByPostId(postId);
     return post;
   }
+  
+  async findBySlug({ slug }) {
+    const post = await this.postRepository.findBySlug(slug);
+    return post;
+  }
+
+  async findByCategoryId({ categoryId }) {
+    const posts = await this.postRepository.findBySlug(categoryId);
+    return posts;
+  }
 
   async findAll() {
     const posts = await this.postRepository.findAll();
     return posts;
   }
 
-  async updated({ postId, title, content }) {
-    const post = await this.postRepository.findByPostId(postId);
+  async updated({ userId, title, slug, content }) {
+    const post = await this.postRepository.findBySlug(slug);
     if (!post) {
       throw new BadRequestException("Post does not exist.");
     }
 
-    const updated = await this.postRepository.updateByPostId(postId, title, content);
+    if (post.userId !== userId) {
+      throw new UnauthorizedException("Access is denied.");
+    }
+
+    const updated = await this.postRepository.updateBySlug(slug, title, content);
     return updated;
   }
 
-  async deleted({ postId }) {
-    const post = await this.postRepository.findByPostId(postId);
+  async deleted({ userId, slug }) {
+    const post = await this.postRepository.findBySlug(slug);
     if (!post) {
       throw new BadRequestException("Post does not exist.");
     }
 
-    const deleted = await this.postRepository.deleteByPostId(postId);
+    if (post.userId !== userId) {
+      throw new UnauthorizedException("Access is denied.");
+    }
+
+    await this.commentRepository.deleteByPostId(post.id);
+    const deleted = await this.postRepository.deleteBySlug(slug);
     return deleted;
   }
-
 }
 
 module.exports = PostService;

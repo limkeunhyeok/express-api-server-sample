@@ -23,6 +23,11 @@ class PostRepository {
     return PostEntity.fromJson(post);
   }
 
+  async findBySlug(slug) {
+    const post = await this.Post.findOne({ slug });
+    return PostEntity.fromJson(post);
+  }
+
   async findByCategoryId(categoryId) {
     const posts = await this.Post.find({ categoryId });
     const result = posts.map(post => PostEntity.fromJson(post));
@@ -35,13 +40,13 @@ class PostRepository {
     return result;
   }
 
-  async updateByPostId(postId, title, content) {
-    const post = await this.Post.findOneAndUpdate({ id: postId }, { title, content }, { new: true });
+  async updateBySlug(slug, title, content) {
+    const post = await this.Post.findOneAndUpdate({ slug }, { title, content }, { new: true });
     return PostEntity.fromJson(post);
   }
 
-  async deleteByPostId(postId) {
-    const result = await this.Post.deleteOne({ id: postId });
+  async deleteBySlug(slug) {
+    const result = await this.Post.deleteOne({ slug });
     return result;
   }
 

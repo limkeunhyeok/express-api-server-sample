@@ -27,8 +27,8 @@
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15",
     "prettier": "^2.5.0",
+    "shortid": "^2.2.16",
     "supertest": "^6.1.6",
-    "uuid": "^8.3.2",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.5"
   },
