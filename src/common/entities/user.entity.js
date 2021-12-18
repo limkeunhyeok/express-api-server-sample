@@ -11,6 +11,7 @@ class UserEntity {
     return new UserEntity(
       json.id,
       json.email,
+      json.password,
       json.nick
     );
   }

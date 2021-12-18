@@ -8,8 +8,8 @@ class CategoryService {
 
   async create({ title }) {
     const hasCategory = await this.categoryRepository.findByTitle(title);
-    if (!hasCategory) {
-      throw new BadRequestException("Category does not exist.");
+    if (hasCategory) {
+      throw new BadRequestException("The category already exists.");
     }
 
     const category = await this.categoryRepository.create({
