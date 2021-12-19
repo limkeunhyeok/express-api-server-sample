@@ -13,7 +13,7 @@ class CategoryRepository {
   }
 
   async findByCategoryId(categoryId) {
-    const category = await this.Category.findOne({ id: categoryId });
+    const category = await this.Category.findOne({ _id: categoryId });
     const result = CategoryEntity.fromJson(category);
     return result;
   }
@@ -30,12 +30,12 @@ class CategoryRepository {
   }
 
   async updateByCategoryId(categoryId, categoryTitle) {
-    const category = await this.Category.findOneAndUpdate({ id: categoryId }, { title: categoryTitle }, { new: true });
+    const category = await this.Category.findOneAndUpdate({ _id: categoryId }, { title: categoryTitle }, { new: true });
     return CategoryEntity.fromJson(category);
   }
 
   async deleteByCategoryId(categoryId) {
-    const result = await this.Category.deleteOne({ id: categoryId });
+    const result = await this.Category.deleteOne({ _id: categoryId });
     return result;
   }
 }

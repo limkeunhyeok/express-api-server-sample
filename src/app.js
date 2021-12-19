@@ -38,7 +38,7 @@ class App {
         saveUninitialized: true,
       })
     );
-    this.app.use(morgan(morganFormat, {stream: logger.stream}));
+    // this.app.use(morgan(morganFormat, {stream: logger.stream}));
     this.app.use(authMiddleware);
   }
 

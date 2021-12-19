@@ -3,7 +3,8 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const mocha = require("mocha");
 
-const { UserModel, PostModel, CategoryModel, CommentModel } = require("../src/models")
+const { UserModel, PostModel, CategoryModel, CommentModel } = require("../src/models");
+const { userData, categoryData } = require("../src/data")
 
 const { before, after } = mocha;
 
@@ -16,6 +17,22 @@ before(async () => {
 
   mongoose.connection
     .on("error", console.log);
+  
+    mongoose.connection
+    .dropCollection("users", (err) => {
+      userData.forEach((data) => {
+        const user = UserModel(data);
+        user.save();
+      });
+    });
+
+  mongoose.connection
+    .dropCollection("categories", (err) => {
+      categoryData.forEach((data) => {
+        const category = new CategoryModel(data);
+        category.save();
+      });
+    });
 });
 
 after(async () => {
