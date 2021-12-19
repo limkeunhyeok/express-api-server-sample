@@ -13,7 +13,7 @@ describe("category api test", () => {
 
   const userData = getUserData();
   let token;
-  beforeEach("set user signup and login", async () => {
+  before("set user signup and login", async () => {
     const params = {
       email: userData.email,
       password: userData.password,

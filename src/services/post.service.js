@@ -51,7 +51,7 @@ class PostService {
       throw new BadRequestException("Post does not exist.");
     }
 
-    if (post.userId !== userId) {
+    if (post.userId.toString() !== userId) {
       throw new UnauthorizedException("Access is denied.");
     }
 
@@ -65,7 +65,7 @@ class PostService {
       throw new BadRequestException("Post does not exist.");
     }
 
-    if (post.userId !== userId) {
+    if (post.userId.toString() !== userId) {
       throw new UnauthorizedException("Access is denied.");
     }
 
