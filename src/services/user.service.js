@@ -47,7 +47,7 @@ class UserService {
 
   async updatePassword({ id, password }) {
     const encryptionPassword = await bcrypt.hash(password, 10);
-    const updated = await this.userRepository.updateNickById(id, encryptionPassword);
+    const updated = await this.userRepository.updatePasswordById(id, encryptionPassword);
     return updated;
   }
 

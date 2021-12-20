@@ -68,7 +68,7 @@ class UserController {
       .nick(nick);
     
     const { id } = user;
-    const updated = await userService.updated({ id, nick });
+    const updated = await userService.updateNick({ id, nick });
     return { updated };
   }
   
@@ -80,7 +80,7 @@ class UserController {
       .password(password);
     
     const { id } = user;
-    const updated = await userService.updated({ id, password });
+    const updated = await userService.updatePassword({ id, password });
     return { updated };
   }
 }
