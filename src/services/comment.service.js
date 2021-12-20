@@ -17,18 +17,18 @@ class CommentService {
 
   async findByUserIdAndSortByPostId({ userId }) {
     const comments = await this.commentRepository.findByUserId(userId);
-    const postIdSet = new Set(comments.map(comment => comment.id))
+    const postIdSet = new Set(comments.map(comment => comment.postId.toString()))
     
     let result = [];
-    postIdSet.forEach(async (postId) => {
+    for (const postId of postIdSet) {
       const post = await this.postRepository.findByPostId(postId);
       const data = {
         postId,
         title: post.title,
-        comments: comments.filter((comment) => comment.postId === postId),
+        comments: comments.filter((comment) => comment.postId.toString() === postId),
       }
       result = [...result, data];
-    })
+    }
     return result;
   }
 
@@ -43,7 +43,7 @@ class CommentService {
       throw new BadRequestException("Comment does not exist.");
     }
 
-    if (comment.userId !== userId) {
+    if (comment.userId.toString() !== userId) {
       throw new UnauthorizedException("Access is denied.");
     }
 

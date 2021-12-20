@@ -13,7 +13,7 @@ class CommentRepository {
   }
 
   async findByCommentId(commentId) {
-    const comment = await this.Comment.findOne({ id: commentId });
+    const comment = await this.Comment.findOne({ _id: commentId });
     return CommentEntity.fromJson(comment);
   }
 
@@ -36,7 +36,7 @@ class CommentRepository {
   }
 
   async deleteByCommentId(commentId) {
-    const result = await this.Comment.deleteOne({ id: commentId });
+    const result = await this.Comment.deleteOne({ _id: commentId });
     return result;
   }
 

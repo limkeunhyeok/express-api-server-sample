@@ -20,6 +20,8 @@
         "no-underscore-dangle": "off",
         "no-unused-vars": "off",
         "camelcase": "off",
-        "no-useless-escape": "off"
+        "no-useless-escape": "off",
+        "no-restricted-syntax": "off",
+        "no-await-in-loop": "off"
     }
 }

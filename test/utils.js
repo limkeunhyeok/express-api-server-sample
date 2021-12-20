@@ -40,3 +40,10 @@ exports.getCategoryData = () => {
   }
   return categoryData;
 }
+
+exports.getCommentData = () => {
+  const commentData = {
+    content: faker.lorem.sentence(),
+  }
+  return commentData;
+}
