@@ -2,9 +2,6 @@ require("dotenv").config();
 
 const mocha = require("mocha");
 const assert = require("assert");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const shortid = require("shortid");
 
 const { PostRepository, UserRepository, CategoryRepository, CommentRepository } = require("../../src/repositories");
 const { PostService } = require("../../src/services");
