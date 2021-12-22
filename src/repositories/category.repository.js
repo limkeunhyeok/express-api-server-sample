@@ -14,12 +14,11 @@ class CategoryRepository {
 
   async findByCategoryId(categoryId) {
     const category = await this.Category.findOne({ _id: categoryId });
-    const result = CategoryEntity.fromJson(category);
-    return result;
+    return CategoryEntity.fromJson(category);
   }
 
   async findByTitle(categoryTitle) {
-    const category = await this.Category.findOne({ title: categoryTitle });
+    const category = await this.Category.findOne({ title: categoryTitle.title });
     return CategoryEntity.fromJson(category);
   }
 
