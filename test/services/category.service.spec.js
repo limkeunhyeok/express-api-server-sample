@@ -3,24 +3,23 @@ require("dotenv").config();
 const mocha = require("mocha");
 const assert = require("assert");
 
-const { PostRepository, UserRepository, CategoryRepository, CommentRepository } = require("../../src/repositories");
+const { PostRepository, CategoryRepository, CommentRepository } = require("../../src/repositories");
 const { CategoryService } = require("../../src/services");
 
 const { BadRequestException } = require("../../src/common/exceptions")
 
-const { getPostData, getUserData, getCategoryData } = require("../utils");
+const { getCategoryData } = require("../utils");
 
-const { describe, it, before } = mocha;
+const { describe, it } = mocha;
 
-describe("post service test", () => {
+describe("category service test", () => {
   const postRepository = new PostRepository();
-  const userRepository = new UserRepository();
   const categoryRepository = new CategoryRepository();
   const categoryService = new CategoryService(categoryRepository, postRepository);
   
   let category;
   describe("create test", () => {
-    it("success: create post", async () => {
+    it("success: create category", async () => {
       const categoryData = getCategoryData();
       const params = {
         title: categoryData.title,
