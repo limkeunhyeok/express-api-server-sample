@@ -8,6 +8,13 @@ const { wrap } = require("../../lib/wrap");
 const userService = new UserService(new UserRepository());
 const userValidation = new UserValidation();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: User management
+ */
+
 class UserController {
   constructor() {
     this.path = "/users";
@@ -27,6 +34,21 @@ class UserController {
     this.router.use(this.path, router);
   }
 
+  /**
+   * @swagger
+   * path:
+   *  /users/signup:
+   *    post:
+   *      summary: Select User
+   *      tags: [Users]
+   *      responses:
+   *        "200":
+   *          description: A user schema
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/User'
+   */
   async signUp(req, res, next) {
     const { email, password, nick } = req.body;
     
@@ -39,6 +61,21 @@ class UserController {
     return true;
   }
 
+  /**
+   * @swagger
+   * path:
+   *  /users/login:
+   *    post:
+   *      summary: Select User
+   *      tags: [Users]
+   *      responses:
+   *        "200":
+   *          description: A user schema
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/User'
+   */
   async login(req, res, next) {
     const { email, password } = req.body;
 

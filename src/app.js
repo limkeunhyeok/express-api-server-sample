@@ -3,6 +3,7 @@ const session = require("express-session");
 
 const { authMiddleware, errorMiddleware, loggingMiddleware, notFoundMiddleware } = require("./middlewares");
 const logger = require("./lib/logger");
+const { swaggerUi, specs } = require("./lib/swagger");
 const { port } = require("./config");
 
 class App {
@@ -37,6 +38,7 @@ class App {
     );
     this.app.use(loggingMiddleware);
     this.app.use(authMiddleware);
+    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
   }
 
   initializeErrorHandling() {
