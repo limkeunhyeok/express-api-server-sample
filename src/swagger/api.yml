@@ -1,0 +1,493 @@
+paths:
+  /api/users/signup:
+    post:
+      tags:
+        - "user"
+      summary: "User registration"
+      description: ""
+      operationId: "userRegistration"
+      consumes:
+        - "application/json"
+        - application/x-www-form-urlencoded
+      produces:
+        - "application/json"
+        - application/x-www-form-urlencoded
+      parameters:
+        in: "body"
+        name: "body"
+        description: "User object that needs to be registered in db"
+        required: true
+        schema:
+          $ref: "#/components/schemas/User"
+      responses:
+        "405":
+          description: "Invalid input"
+      security:
+      - petstore_auth:
+        - "write:pets"
+        - "read:pets"
+  /api/users/login:
+    post:
+      tags:
+        - "user"
+      summary: "User login"
+      description: "User login"
+      operationId: "userLogin"
+      produces:
+        - "application/json"
+        - "application/x-www-form-urlencoded"
+      parameters:
+        name: "status"
+        in: "query"
+        description: "Status values that need to be considered for filter"
+        required: true
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "available"
+          - "pending"
+          - "sold"
+          default: "available"
+        collectionFormat: "multi"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/User"
+        "400":
+          description: "Invalid status value"
+      security:
+      - petstore_auth:
+        - "write:pets"
+        - "read:pets"
+  /api/users/nick:
+    put:
+      tags:
+        - "user"
+      summary: "Update user nickname"
+      description: "This can only be done by the logged in user."
+      operationId: "updateUserNickname"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "tags"
+        in: "query"
+        description: "Tags to filter by"
+        required: true
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Pet"
+        "400":
+          description: "Invalid tag value"
+      security:
+      - petstore_auth:
+        - "write:pets"
+        - "read:pets"
+  /api/users/password:
+    get:
+      tags:
+        - "user"
+      summary: "update user password"
+      description: "Returns a single pet"
+      operationId: "getPetById"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "petId"
+        in: "path"
+        description: "ID of pet to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Pet"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Pet not found"
+      security:
+      - api_key: []
+  /api/users:
+    delete:
+      tags:
+        - "user"
+      summary: "Delete user"
+      description: "This can only be done by the logged in user."
+      operationId: "uploadFile"
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "petId"
+        in: "path"
+        description: "ID of pet to update"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "additionalMetadata"
+        in: "formData"
+        description: "Additional data to pass to server"
+        required: false
+        type: "string"
+      - name: "file"
+        in: "formData"
+        description: "file to upload"
+        required: false
+        type: "file"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+      security:
+      - petstore_auth:
+        - "write:pets"
+        - "read:pets"
+  /api/categories:
+    post:
+      tags:
+        - "category"
+      summary: "Create category"
+      description: "Returns a map of status codes to quantities"
+      operationId: "getInventory"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            additionalProperties:
+              type: "integer"
+              format: "int32"
+      security:
+      - api_key: []
+    get:
+      tags:
+        - "category"
+      summary: "Find all category"
+      description: "Returns a map of status codes to quantities"
+      operationId: "getInventory"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            additionalProperties:
+              type: "integer"
+              format: "int32"
+      security:
+      - api_key: []
+  /api/categories/{categoryId}:
+    get:
+      tags:
+        - "category"
+      summary: "Find one category by category id"
+      description: ""
+      operationId: "placeOrder"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "order placed for purchasing the pet"
+        required: true
+        schema:
+          $ref: "#/definitions/Order"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Order"
+        "400":
+          description: "Invalid Order"
+    put:
+      tags:
+        - "category"
+      summary: "Update category title by category id"
+      description: ""
+      operationId: "placeOrder"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "order placed for purchasing the pet"
+        required: true
+        schema:
+          $ref: "#/definitions/Order"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Order"
+        "400":
+          description: "Invalid Order"
+    delete:
+      tags:
+        - "category"
+      summary: "Delete one category by category id"
+      description: ""
+      operationId: "placeOrder"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "order placed for purchasing the pet"
+        required: true
+        schema:
+          $ref: "#/definitions/Order"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Order"
+        "400":
+          description: "Invalid Order"
+  /api/posts:
+    post:
+      tags:
+        - "post"
+      summary: "Create Post"
+      description: "For valid response try integer IDs with value >= 1 and <= 10.         Other values will generated exceptions"
+      operationId: "getOrderById"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "orderId"
+        in: "path"
+        description: "ID of pet that needs to be fetched"
+        required: true
+        type: "integer"
+        maximum: 10.0
+        minimum: 1.0
+        format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Order"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Order not found"
+    get:
+      tags:
+        - "post"
+      summary: "Find all posts"
+      description: "For valid response try integer IDs with positive integer value.         Negative or non-integer values will generate API errors"
+      operationId: "deleteOrder"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "orderId"
+        in: "path"
+        description: "ID of the order that needs to be deleted"
+        required: true
+        type: "integer"
+        minimum: 1.0
+        format: "int64"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Order not found"
+  /api/posts/{slug}:
+    get:
+      tags:
+        - "post"
+      summary: "Find one post by slug"
+      description: "This can only be done by the logged in user."
+      operationId: "createUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        default:
+          description: "successful operation"
+    put:
+      tags:
+        - "post"
+      summary: "Update post by slug"
+      description: "This can only be done by the logged in user."
+      operationId: "createUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        default:
+          description: "successful operation"
+    delete:
+      tags:
+        - "post"
+      summary: "Delete post by slug"
+      description: "This can only be done by the logged in user."
+      operationId: "createUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        default:
+          description: "successful operation"
+  /api/comments/{postId}:
+    post:
+      tags:
+        - "comment"
+      summary: "Create comment"
+      description: ""
+      operationId: "createUsersWithArrayInput"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of user object"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/User"
+      responses:
+        default:
+          description: "successful operation"
+    get:
+      tags:
+        - "comment"
+      summary: "Find one comment by post id"
+      description: ""
+      operationId: "createUsersWithArrayInput"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of user object"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/User"
+      responses:
+        default:
+          description: "successful operation"
+  /api/comments:
+    get:
+      tags:
+        - "comment"
+      summary: "Find all comments"
+      description: ""
+      operationId: "createUsersWithListInput"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of user object"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/User"
+      responses:
+        default:
+          description: "successful operation"
+  /api/comments/{commentId}:
+    delete:
+      tags:
+      - "comment"
+      summary: "Delete comment by comment id"
+      description: ""
+      operationId: "loginUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "The user name for login"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "query"
+        description: "The password for login in clear text"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "string"
+          headers:
+            X-Rate-Limit:
+              type: "integer"
+              format: "int32"
+              description: "calls per hour allowed by the user"
+            X-Expires-After:
+              type: "string"
+              format: "date-time"
+              description: "date in UTC when token expires"
+        "400":
+          description: "Invalid username/password supplied"
+securityDefinitions:
+  petstore_auth:
+    type: "oauth2"
+    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
+    flow: "implicit"
+    scopes:
+      write:pets: "modify pets in your account"
+      read:pets: "read your pets"
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"

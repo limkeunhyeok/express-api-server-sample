@@ -5,9 +5,9 @@ const options = {
   swaggerDefinition: {
     openapi: "3.0.0",
     info: {
-      title: "Express Service with Swagger",
+      title: "Express API Server Sample",
       version: "1.0.0",
-      description: "a Rest api using swagger and express.",
+      description: "This is a express api server sample. This document provides api and schema information. This project is intended to demonstrate development skills. In actual development, it has a similar structure and style to this project, and the documentation is similar.",
     },
     servers: [
       {

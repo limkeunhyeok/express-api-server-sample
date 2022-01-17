@@ -1,0 +1,90 @@
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - email
+        - password
+        - nick
+      properties:
+        email:
+          type: string
+          format: email
+          description: Email for the user, needs to be unique.
+        password:
+          type: string
+        nick:
+          type: string
+        createdAt:
+          type: date
+        updatedAt:
+          type: date
+      example:
+        email: example@email.com
+        password: $2b$10$Q6XVnrIzh8vYUxwgvBubY.XhxWokGdI0P0vCXEb7d2d7UxmCVmkIu
+        nick: example
+        createdAt: 2022-01-15T19:43:53.211+00:00
+        updatedAt: 2022-01-15T19:43:53.211+00:00
+    Post:
+      type: object
+      required:
+        - userId
+        - categoryId
+        - title
+        - slug
+        - content
+      properties:
+        userId:
+          type: objectId
+        categoryId:
+          type: objectId
+        title:
+          type: string
+        slug:
+          type: string
+        content:
+          type: string
+        createdAt:
+          type: date
+        updatedAt:
+          type: date
+        example:
+           userId: 61e418db9838668324830cca
+           categoryId: 61e418db9838668324830ccc
+           title: Dolorem sequi voluptas non.
+           slug: Dolorem-sequi-voluptas-non.-u2Hx7_Sja
+           content: Occaecati minus voluptate. Minima similique deleniti optio deleniti ipsum cumque. Tempore et in quae a. Libero ut et accusamus sint. Modi est nihil. Dolor harum velit illum iusto. Consectetur omnis ipsa repellendus explicabo aut repellat. Excepturi optio magnam nam ducimus fuga labore voluptatibus. Modi enim quas in id quaerat mollitia et. Aspernatur et iste harum. Qui magnam voluptatibus quod maiores doloremque aperiam esse voluptates id. Quisquam iusto corrupti sint aut nihil.
+           createdAt: 2022-01-16T13:08:43.111+00:00
+           updatedAt: 2022-01-16T13:08:43.111+00:00
+    Comment:
+      type: object
+      required:
+        - userId
+        - postId
+        - content
+      properties:
+        userId:
+          type: objectId
+        postId:
+          type: objectId
+        content:
+          type: string
+        createdAt:
+          type: date
+      example:
+          userId: 61e418db9838668324830cca
+          postId: 61e418db9838668324830ccc
+          content: Occaecati minus voluptate.
+          createdAt: 2022-01-16T13:08:43.111+00:00
+    Category:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+        createdAt:
+          type: date
+      example:
+          title: minus
+          createdAt: 2022-01-16T13:08:43.111+00:00
