@@ -2,492 +2,460 @@ paths:
   /api/users/signup:
     post:
       tags:
-        - "user"
+        - user
       summary: "User registration"
       description: ""
-      operationId: "userRegistration"
       consumes:
-        - "application/json"
-        - application/x-www-form-urlencoded
-      produces:
-        - "application/json"
-        - application/x-www-form-urlencoded
-      parameters:
-        in: "body"
-        name: "body"
-        description: "User object that needs to be registered in db"
+        - application/json
+      requestBody:
+        x-name: body
         required: true
-        schema:
-          $ref: "#/components/schemas/User"
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              - password
+              - nick
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                nick:
+                  type: string
       responses:
-        "405":
-          description: "Invalid input"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
+        "200":
+          description: "Successful operation"
+        "400":
+          description: "Invalied input"
+        "401":
+          description: "Access denied"
   /api/users/login:
     post:
       tags:
-        - "user"
+        - user
       summary: "User login"
-      description: "User login"
-      operationId: "userLogin"
-      produces:
-        - "application/json"
-        - "application/x-www-form-urlencoded"
-      parameters:
-        name: "status"
-        in: "query"
-        description: "Status values that need to be considered for filter"
+      description: ""
+      consumes:
+        - application/json
+      requestBody:
+        x-name: body
         required: true
-        type: "array"
-        items:
-          type: "string"
-          enum:
-          - "available"
-          - "pending"
-          - "sold"
-          default: "available"
-        collectionFormat: "multi"
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
       responses:
         "200":
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/components/schemas/User"
+          description: "Successful operation"
         "400":
-          description: "Invalid status value"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
+          description: "Invalied input"
+        "401":
+          description: "Access denied"
   /api/users/nick:
     put:
       tags:
-        - "user"
+        - user
       summary: "Update user nickname"
       description: "This can only be done by the logged in user."
-      operationId: "updateUserNickname"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "tags"
-        in: "query"
-        description: "Tags to filter by"
+      consumes:
+        - application/json
+      requestBody:
+        x-name: body
         required: true
-        type: "array"
-        items:
-          type: "string"
-        collectionFormat: "multi"
+        content:
+          application/json:
+            schema:
+              required:
+              - nick
+              properties:
+                nick:
+                  type: string
       responses:
         "200":
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Pet"
+          description: "Successful operation"
         "400":
-          description: "Invalid tag value"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
+          description: "Invalied input"
+        "401":
+          description: "Access denied"
   /api/users/password:
     get:
       tags:
-        - "user"
-      summary: "update user password"
-      description: "Returns a single pet"
-      operationId: "getPetById"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "petId"
-        in: "path"
-        description: "ID of pet to return"
+        - user
+      summary: "Update user password"
+      description: "This can only be done by the logged in user."
+      consumes:
+        - application/json
+      requestBody:
+        x-name: body
         required: true
-        type: "integer"
-        format: "int64"
+        content:
+          application/json:
+            schema:
+              required:
+              - password
+              properties:
+                password:
+                  type: string
       responses:
         "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Pet"
+          description: "Successful operation"
         "400":
-          description: "Invalid ID supplied"
-        "404":
-          description: "Pet not found"
-      security:
-      - api_key: []
+          description: "Invalied input"
+        "401":
+          description: "Access denied"
   /api/users:
     delete:
       tags:
-        - "user"
+        - user
       summary: "Delete user"
       description: "This can only be done by the logged in user."
-      operationId: "uploadFile"
       consumes:
-      - "multipart/form-data"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "petId"
-        in: "path"
-        description: "ID of pet to update"
+        - application/json
+      requestBody:
+        x-name: body
         required: true
-        type: "integer"
-        format: "int64"
-      - name: "additionalMetadata"
-        in: "formData"
-        description: "Additional data to pass to server"
-        required: false
-        type: "string"
-      - name: "file"
-        in: "formData"
-        description: "file to upload"
-        required: false
-        type: "file"
+        content:
+          application/json:
+            schema:
+              required:
+              - nick
+              properties:
+                nick:
+                  type: string
       responses:
         "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/ApiResponse"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
+          description: "Successful operation"
+        "400":
+          description: "Invalied input"
+        "401":
+          description: "Access denied"
   /api/categories:
     post:
       tags:
-        - "category"
+        - category
       summary: "Create category"
-      description: "Returns a map of status codes to quantities"
-      operationId: "getInventory"
-      produces:
-      - "application/json"
-      parameters: []
+      description: "This can only be done by the logged in user."
+      consumes:
+        - application/json
+      requestBody:
+        x-name: body
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+              - title
+              properties:
+                title:
+                  type: string
       responses:
         "200":
-          description: "successful operation"
-          schema:
-            type: "object"
-            additionalProperties:
-              type: "integer"
-              format: "int32"
-      security:
-      - api_key: []
+          description: "Successful operation"
+        "400":
+          description: "Invalied input"
+        "401":
+          description: "Access denied"
     get:
       tags:
-        - "category"
+        - category
       summary: "Find all category"
-      description: "Returns a map of status codes to quantities"
-      operationId: "getInventory"
-      produces:
-      - "application/json"
-      parameters: []
+      description: "This can only be done by the logged in user."
+      consumes:
+        - application/json
+      requestBody:
+        x-name: body
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+              - title
+              properties:
+                title:
+                  type: string
       responses:
         "200":
-          description: "successful operation"
-          schema:
-            type: "object"
-            additionalProperties:
-              type: "integer"
-              format: "int32"
-      security:
-      - api_key: []
+          description: "Successful operation"
+        "400":
+          description: "Invalied input"
+        "401":
+          description: "Access denied"
   /api/categories/{categoryId}:
     get:
       tags:
-        - "category"
-      summary: "Find one category by category id"
-      description: ""
-      operationId: "placeOrder"
-      produces:
-      - "application/xml"
-      - "application/json"
+        - category
+      summary: "Find one category by categoryId"
+      description: "This can only be done by the logged in user."
+      consumes:
+        - application/json
       parameters:
-      - in: "body"
-        name: "body"
-        description: "order placed for purchasing the pet"
-        required: true
-        schema:
-          $ref: "#/definitions/Order"
+        - name: categoryId
+          in: path
+          description: "Category id"
+          required: true
+          type: string
       responses:
         "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Order"
+          description: "Successful operation"
         "400":
-          description: "Invalid Order"
+          description: "Invalied input"
+        "401":
+          description: "Access denied"
     put:
       tags:
         - "category"
       summary: "Update category title by category id"
-      description: ""
-      operationId: "placeOrder"
-      produces:
-      - "application/xml"
-      - "application/json"
+      description: "This can only be done by the logged in user."
+      consumes:
+        - application/json
       parameters:
-      - in: "body"
-        name: "body"
-        description: "order placed for purchasing the pet"
-        required: true
-        schema:
-          $ref: "#/definitions/Order"
+        - name: categoryId
+          in: path
+          description: "Category id"
+          required: true
+          type: string
       responses:
         "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Order"
+          description: "Successful operation"
         "400":
-          description: "Invalid Order"
+          description: "Invalied input"
+        "401":
+          description: "Access denied"
     delete:
       tags:
         - "category"
       summary: "Delete one category by category id"
-      description: ""
-      operationId: "placeOrder"
-      produces:
-      - "application/xml"
-      - "application/json"
+      description: "This can only be done by the logged in user."
+      consumes:
+        - application/json
       parameters:
-      - in: "body"
-        name: "body"
-        description: "order placed for purchasing the pet"
-        required: true
-        schema:
-          $ref: "#/definitions/Order"
+        - name: categoryId
+          in: path
+          description: "Category id"
+          required: true
+          type: string
       responses:
         "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Order"
+          description: "Successful operation"
         "400":
-          description: "Invalid Order"
+          description: "Invalied input"
+        "401":
+          description: "Access denied"
   /api/posts:
     post:
       tags:
         - "post"
       summary: "Create Post"
-      description: "For valid response try integer IDs with value >= 1 and <= 10.         Other values will generated exceptions"
-      operationId: "getOrderById"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "orderId"
-        in: "path"
-        description: "ID of pet that needs to be fetched"
+      description: "This can only be done by the logged in user."
+      consumes:
+        - application/json
+      requestBody:
+        x-name: body
         required: true
-        type: "integer"
-        maximum: 10.0
-        minimum: 1.0
-        format: "int64"
+        content:
+          application/json:
+            schema:
+              required:
+              - categoryId
+              - title
+              - content
+              properties:
+                categoryId:
+                  type: string
+                title:
+                  type: string
+                content:
+                  type: string
       responses:
         "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Order"
+          description: "Successful operation"
         "400":
-          description: "Invalid ID supplied"
-        "404":
-          description: "Order not found"
+          description: "Invalied input"
+        "401":
+          description: "Access denied"
     get:
       tags:
         - "post"
       summary: "Find all posts"
-      description: "For valid response try integer IDs with positive integer value.         Negative or non-integer values will generate API errors"
-      operationId: "deleteOrder"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "orderId"
-        in: "path"
-        description: "ID of the order that needs to be deleted"
-        required: true
-        type: "integer"
-        minimum: 1.0
-        format: "int64"
+      description: "This can only be done by the logged in user."
+      consumes:
+        - application/json
       responses:
+        "200":
+          description: "Successful operation"
         "400":
-          description: "Invalid ID supplied"
-        "404":
-          description: "Order not found"
+          description: "Invalied input"
+        "401":
+          description: "Access denied"
   /api/posts/{slug}:
     get:
       tags:
         - "post"
       summary: "Find one post by slug"
       description: "This can only be done by the logged in user."
-      operationId: "createUser"
-      produces:
-      - "application/xml"
-      - "application/json"
+      consumes:
+        - application/json
       parameters:
-      - in: "body"
-        name: "body"
-        description: "Created user object"
-        required: true
-        schema:
-          $ref: "#/definitions/User"
+        - name: slug
+          in: path
+          description: "slug"
+          required: true
+          type: string
       responses:
-        default:
-          description: "successful operation"
+        "200":
+          description: "Successful operation"
+        "400":
+          description: "Invalied input"
+        "401":
+          description: "Access denied"
     put:
       tags:
         - "post"
       summary: "Update post by slug"
       description: "This can only be done by the logged in user."
-      operationId: "createUser"
-      produces:
-      - "application/xml"
-      - "application/json"
+      consumes:
+        - application/json
       parameters:
-      - in: "body"
-        name: "body"
-        description: "Created user object"
+        - name: slug
+          in: path
+          description: "slug"
+          required: true
+          type: string
+      requestBody:
+        x-name: body
         required: true
-        schema:
-          $ref: "#/definitions/User"
+        content:
+          application/json:
+            schema:
+              required:
+              - title
+              - content
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
       responses:
-        default:
-          description: "successful operation"
+        "200":
+          description: "Successful operation"
+        "400":
+          description: "Invalied input"
+        "401":
+          description: "Access denied"
     delete:
       tags:
         - "post"
       summary: "Delete post by slug"
       description: "This can only be done by the logged in user."
-      operationId: "createUser"
-      produces:
-      - "application/xml"
-      - "application/json"
+      consumes:
+        - application/json
       parameters:
-      - in: "body"
-        name: "body"
-        description: "Created user object"
-        required: true
-        schema:
-          $ref: "#/definitions/User"
+        - name: slug
+          in: path
+          description: "slug"
+          required: true
+          type: string
       responses:
-        default:
-          description: "successful operation"
+        "200":
+          description: "Successful operation"
+        "400":
+          description: "Invalied input"
+        "401":
+          description: "Access denied"
   /api/comments/{postId}:
     post:
       tags:
         - "comment"
       summary: "Create comment"
-      description: ""
-      operationId: "createUsersWithArrayInput"
-      produces:
-      - "application/xml"
-      - "application/json"
+      description: "This can only be done by the logged in user."
+      consumes:
+        - application/json
       parameters:
-      - in: "body"
-        name: "body"
-        description: "List of user object"
+        - name: postId
+          in: path
+          description: "post id"
+          required: true
+          type: string
+      requestBody:
+        x-name: body
         required: true
-        schema:
-          type: "array"
-          items:
-            $ref: "#/definitions/User"
+        content:
+          application/json:
+            schema:
+              required:
+              - content
+              properties:
+                content:
+                  type: string
       responses:
-        default:
-          description: "successful operation"
+        "200":
+          description: "Successful operation"
+        "400":
+          description: "Invalied input"
+        "401":
+          description: "Access denied"
     get:
       tags:
         - "comment"
       summary: "Find one comment by post id"
-      description: ""
-      operationId: "createUsersWithArrayInput"
-      produces:
-      - "application/xml"
-      - "application/json"
+      description: "This can only be done by the logged in user."
+      consumes:
+        - application/json
       parameters:
-      - in: "body"
-        name: "body"
-        description: "List of user object"
-        required: true
-        schema:
-          type: "array"
-          items:
-            $ref: "#/definitions/User"
+        - name: postId
+          in: path
+          description: "postId"
+          required: true
+          type: string
       responses:
-        default:
-          description: "successful operation"
+        "200":
+          description: "Successful operation"
+        "400":
+          description: "Invalied input"
+        "401":
+          description: "Access denied"
   /api/comments:
     get:
       tags:
         - "comment"
       summary: "Find all comments"
-      description: ""
-      operationId: "createUsersWithListInput"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "List of user object"
-        required: true
-        schema:
-          type: "array"
-          items:
-            $ref: "#/definitions/User"
+      description: "This can only be done by the logged in user."
+      consumes:
+        - application/json
       responses:
-        default:
-          description: "successful operation"
+        "200":
+          description: "Successful operation"
+        "400":
+          description: "Invalied input"
+        "401":
+          description: "Access denied"
   /api/comments/{commentId}:
     delete:
       tags:
       - "comment"
       summary: "Delete comment by comment id"
-      description: ""
-      operationId: "loginUser"
-      produces:
-      - "application/xml"
-      - "application/json"
+      description: "This can only be done by the logged in user."
+      consumes:
+        - application/json
       parameters:
-      - name: "username"
-        in: "query"
-        description: "The user name for login"
-        required: true
-        type: "string"
-      - name: "password"
-        in: "query"
-        description: "The password for login in clear text"
-        required: true
-        type: "string"
+        - name: commentId
+          in: path
+          description: "commentId"
+          required: true
+          type: string
       responses:
         "200":
-          description: "successful operation"
-          schema:
-            type: "string"
-          headers:
-            X-Rate-Limit:
-              type: "integer"
-              format: "int32"
-              description: "calls per hour allowed by the user"
-            X-Expires-After:
-              type: "string"
-              format: "date-time"
-              description: "date in UTC when token expires"
+          description: "Successful operation"
         "400":
-          description: "Invalid username/password supplied"
-securityDefinitions:
-  petstore_auth:
-    type: "oauth2"
-    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
-    flow: "implicit"
-    scopes:
-      write:pets: "modify pets in your account"
-      read:pets: "read your pets"
-  api_key:
-    type: "apiKey"
-    name: "api_key"
-    in: "header"
+          description: "Invalied input"
+        "401":
+          description: "Access denied"
