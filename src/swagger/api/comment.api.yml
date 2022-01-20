@@ -1,0 +1,270 @@
+paths:
+  /api/comments/{postId}:
+    post:
+      tags:
+        - comment
+      summary: Create comment
+      description: >
+        This can only be done by the logged in user.
+      parameters:
+        - name: postId
+          in: path
+          description: post id
+          required: true
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                content:
+                  type: string
+              required:
+                - content
+      responses:
+        responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      userId:
+                        type: string
+                      postId:
+                        type: string
+                      content:
+                        type: string
+                  error:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+        "400":
+          description: Invalied input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 400
+                      message:
+                        type: string
+        "401":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 401
+                      message:
+                        type: string
+    get:
+      tags:
+        - comment
+      summary: Find one comment by post id
+      description: >
+        This can only be done by the logged in user.
+      parameters:
+        - name: postId
+          in: path
+          description: postId
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: string
+                        userId:
+                          type: string
+                        postId:
+                          type: string
+                        content:
+                          type: string
+                  error:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+        "401":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 401
+                      message:
+                        type: string
+  /api/comments:
+    get:
+      tags:
+        - comment
+      summary: Find all comments
+      description: >
+        This can only be done by the logged in user.
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      userId:
+                        type: string
+                      postId:
+                        type: string
+                      content:
+                        type: string
+                  error:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+        "401":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 401
+                      message:
+                        type: string
+  /api/comments/{commentId}:
+    delete:
+      tags:
+      - comment
+      summary: Delete comment by comment id
+      description: >
+        This can only be done by the logged in user.
+      parameters:
+        - name: commentId
+          in: path
+          description: commentId
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: object
+                    properties:
+                      deleted:
+                        type: object
+                        properties:
+                          deletedCount:
+                            type: integer
+                            example: 1
+                  error:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+        "401":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 401
+                      message:
+                        type: string

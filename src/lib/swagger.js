@@ -12,15 +12,17 @@ const options = {
     servers: [
       {
         url: "http://localhost:4000",
+        description: "Main (production) server"
+      },
+      {
+        url: "http://127.0.0.1:4000",
+        description: "Internal starting server for testing"
       },
     ],
   },
   apis: [
-    "./src/models/*.js",
-    "./src/api/comments/*.js",
-    "./src/api/posts/*.js",
-    "./src/api/users/*.js",
-    './src/swagger/*'
+    './src/swagger/api/*',
+    './src/swagger/schema/*'
   ]
 };
 

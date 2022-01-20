@@ -1,0 +1,388 @@
+paths:
+  /api/users/signup:
+    post:
+      tags:
+        - user
+      summary: User registration
+      description: ""
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                nick:
+                  type: string
+              required:
+                - email
+                - password
+                - nick
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: boolean
+                  error:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+        "400":
+          description: Invalied input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 400
+                      message:
+                        type: string
+  /api/users/login:
+    post:
+      tags:
+        - user
+      summary: User login
+      description: ""
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                  error:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+        "400":
+          description: Invalied input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 400
+                      message:
+                        type: string
+  /api/users/nick:
+    put:
+      tags:
+        - user
+      summary: Update user nickname
+      description: >
+        This can only be done by the logged in user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                nick:
+                  type: string
+              required:
+                - nick
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: object
+                    properties:
+                      updated:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          email:
+                            type: string
+                          password:
+                            type: string
+                          nick:
+                            type: string
+                  error:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+        "400":
+          description: Invalied input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 400
+                      message:
+                        type: string
+        "401":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 401
+                      message:
+                        type: string
+  /api/users/password:
+    put:
+      tags:
+        - user
+      summary: Update user password
+      description: >
+        This can only be done by the logged in user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                password:
+                  type: string
+              required:
+                - password
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: object
+                    properties:
+                      updated:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          email:
+                            type: string
+                          password:
+                            type: string
+                          nick:
+                            type: string
+                  error:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+        "400":
+          description: Invalied input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 400
+                      message:
+                        type: string
+        "401":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 401
+                      message:
+                        type: string
+  /api/users:
+    delete:
+      tags:
+        - user
+      summary: Delete user
+      description: >
+        This can only be done by the logged in user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                nick:
+                  type: string
+              required:
+                - nick
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: object
+                    properties:
+                      deleted:
+                        type: object
+                        properties:
+                          deletedCount:
+                            type: integer
+                            example: 1
+                  error:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+        "400":
+          description: Invalied input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 400
+                      message:
+                        type: string
+        "401":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 401
+                      message:
+                        type: string

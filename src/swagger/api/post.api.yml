@@ -1,0 +1,427 @@
+paths:
+  /api/posts:
+    post:
+      tags:
+        - post
+      summary: Create Post
+      description: >
+        This can only be done by the logged in user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                categoryId:
+                  type: string
+                title:
+                  type: string
+                content:
+                  type: string
+              required:
+                - categoryId
+                - title
+                - content
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      userId:
+                        type: string
+                      categoryId:
+                        type: string
+                      title:
+                        type: string
+                      slug:
+                        type: string
+                      content:
+                        type: string
+                        example: 1
+                  error:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+        "400":
+          description: Invalied input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 400
+                      message:
+                        type: string
+        "401":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 401
+                      message:
+                        type: string
+    get:
+      tags:
+        - post
+      summary: Find all posts
+      description: >
+        This can only be done by the logged in user.
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: string
+                        userId:
+                          type: string
+                        categoryId:
+                          type: string
+                        title:
+                          type: string
+                        slug:
+                          type: string
+                        content:
+                          type: string
+                  error:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+        "401":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 401
+                      message:
+                        type: string
+  /api/posts/{slug}:
+    get:
+      tags:
+        - post
+      summary: Find one post by slug
+      description: >
+        This can only be done by the logged in user.
+      parameters:
+        - name: slug
+          in: path
+          description: slug
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      userId:
+                        type: string
+                      categoryId:
+                        type: string
+                      title:
+                        type: string
+                      slug:
+                        type: string
+                      content:
+                        type: string
+                  error:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+        "400":
+          description: Invalied input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 400
+                      message:
+                        type: string
+        "401":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 401
+                      message:
+                        type: string
+    put:
+      tags:
+        - post
+      summary: Update post by slug
+      description: >
+        This can only be done by the logged in user.
+      parameters:
+        - name: slug
+          in: path
+          description: slug
+          required: true
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+              required:
+                - title
+                - content
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: object
+                    properties:
+                      updated:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          userId:
+                            type: string
+                          categoryId:
+                            type: string
+                          title:
+                            type: string
+                          slug:
+                            type: string
+                          content:
+                            type: string
+                  error:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+        "400":
+          description: Invalied input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 400
+                      message:
+                        type: string
+        "401":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 401
+                      message:
+                        type: string
+    delete:
+      tags:
+        - post
+      summary: Delete post by slug
+      description: >
+        This can only be done by the logged in user.
+      parameters:
+        - name: slug
+          in: path
+          description: slug
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: object
+                    properties:
+                      deleted:
+                        type: object
+                        properties:
+                          deletedCount:
+                            type: integer
+                            example: 1
+                  error:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+        "400":
+          description: Invalied input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 400
+                      message:
+                        type: string
+        "401":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: string
+                    nullable: true
+                    default: null
+                    example: null
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        example: 401
+                      message:
+                        type: string

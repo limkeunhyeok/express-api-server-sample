@@ -1,0 +1,14 @@
+components:
+  schemas:
+    Category:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+        createdAt:
+          type: date
+      example:
+          title: minus
+          createdAt: 2022-01-16T13:08:43.111+00:00
